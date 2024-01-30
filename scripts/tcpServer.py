@@ -10,7 +10,6 @@ from _thread import start_new_thread
 
 class TCPServer:
 
-    RECV_BUFFER = 2048
 
     def __init__(self, host: str, port: int) -> None:
 
@@ -24,6 +23,7 @@ class TCPServer:
 
         self.host = host
         self.port = port
+        self.thread_count = 0
 
         # Instantiate a socket object and bind it.
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -42,15 +42,13 @@ class TCPServer:
             conn (socket.socket): Socket connection object.
         """
 
-        conn.send("Connection established.".encode("utf-8"))
-
         while True:
-            data = conn.recv(self.RECV_BUFFER)
+            data = conn.recv(2048)
             message = data.decode("utf-8")
             if not data:
                 break
             answer = f"Server received: {message}"
-            conn.sendall(data)
+            conn.sendall(answer.encode())
 
         conn.close()
 
@@ -65,14 +63,15 @@ class TCPServer:
 
         while True:
             conn, addr = self.server.accept()
-            print(f"Connected to {addr[0]}:{addr[1]}")
+            print(f"({self.thread_count}) Connected to {addr[0]}:{addr[1]}")
             start_new_thread(self.clientHandler, (conn,))
+            self.thread_count += 1
 
 
 if __name__ == "__main__":
 
     HOST = "0.0.0.0"
-    PORT = 5555
+    PORT = 55555
 
     server = TCPServer(HOST, PORT)
     server.start()
