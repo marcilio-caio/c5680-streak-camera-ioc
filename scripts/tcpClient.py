@@ -31,6 +31,7 @@ class TCPClient:
             self.client.connect((self.host, self.port))
             self.is_connected = True
             print(f"Connected to {self.host}:{self.port}")
+            print(f"Handshake Message: {self.read()}")
         except ConnectionRefusedError:
             print("Connection refused. Check if the server is running.")
 
@@ -48,8 +49,17 @@ class TCPClient:
         """
 
         self.client.sendall(message.encode("utf-8"))
-        response = self.client.recv(2048)
-        return response.decode("utf-8")
+
+    
+    def read(self) -> str:
+
+        print("Waiting for response...")
+        
+        response = ""
+        while response == "" or response[-1] != "\r":
+            response += self.client.recv(1).decode("utf-8")
+            
+        return response
     
 
     def close(self) -> None:
@@ -62,9 +72,12 @@ class TCPClient:
 
 
 if __name__ == "__main__":
-    client = TCPClient("localhost", 55555)
+    client = TCPClient("10.31.24.28", 1001)
     if client.is_connected:
-        message = "Hello, server!"
-        response = client.send(message)
-        print(response)
+        
+        message = ""
+        while message != "exit\r":
+            message = input("Enter a message: ")
+            client.send(message + "\r")
+            print(client.read())
         client.close()
