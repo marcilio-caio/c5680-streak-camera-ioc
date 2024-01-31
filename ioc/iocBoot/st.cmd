@@ -1,10 +1,10 @@
-#!/opt/epics-R3.15.9/modules/StreamDevice-2.8.24/bin/linux-x86_64/streamApp
+#!/opt/epics-R3.15.9/modules/StreamDevice-2.8.16/bin/linux-x86_64/streamApp
 
 # Setting environment variables
 epicsEnvSet("HOST",                     "localhost")
 epicsEnvSet("PORT",                     "5555")
 epicsEnvSet("IOC",                      "/opt/streak-camera/ioc")
-epicsEnvSet("STREAMDEVICE",             "/opt/epics-R3.15.9/modules/StreamDevice-2.8.24")
+epicsEnvSet("STREAMDEVICE",             "/opt/epics-R3.15.9/modules/StreamDevice-2.8.16")
 epicsEnvSet("STREAM_PROTOCOL_PATH",     "${IOC}/protocol")
 epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "1048576")
 
