@@ -13,3 +13,22 @@ devParamGetFloat  { out "DevParamSet(\$1,\$2)";        in "0,DevParamGet,%f";   
 devParamGetStr    { out "DevParamSet(\$1,\$2)";        in "0,DevParamGet,%s";         }
 genParamSet       { out "GenParamSet(\%1,%f)";         in "%d,GenParamSet";           }
 genParamGet       { out "GenParamGet(\$1)";            in "%d,GenParamGet,*";         }
+
+# Acquisition commands
+acqStart          { out "AcqStart(\$1)";               in "%d,AcqStart";              }
+acqStatus         { out "AcqStatus()";                 in "0,AcqStatus,%s";           }
+acqStop           { out "AcqStop(5000)";               in "%d,AcqStop%*s";            }
+
+# Camera commands
+camParamGetFloat  { out "CamParamGet(\%1,\%2)";        in "0,CamParamGet,%f";         }
+camParamGetStr    { out "CamParamGet(\%1,\%2)";        in "0,CamParamGet,%s";         }
+camParamSet       { out "CamParamSet(\%1,\%2,\%3)";    in "%d,CamParamSet";           }
+
+# Image commands
+
+
+# Quick Profile commands
+
+
+# LUT commands
+lutSetAuto        { out "LutSetAuto();";                                              }

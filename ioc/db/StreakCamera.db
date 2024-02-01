@@ -10,6 +10,15 @@ record(ao, "SC:AppEnd-Cmd") {
     field(OUT,  "@StreakCamera.proto appEnd $(port)")
 }
 
+record(mbbo, "SC:AcqParams:Start-Cmd") {
+    field(DTYP, "stream")
+    field(OUT,  "@StreakCamera.proto acqStart(%s) $(port)")
+    field(ZRST, "Live")            field(ZRVL, "0")
+    field(ONST, "Acquire")         field(ONVL, "1")
+    field(TWST, "AI")              field(TWVL, "2")
+    field(THST, "PC")              field(THVL, "3")
+}
+
 ## Setpoint Records
 
 record(ao, "SC:GenParams:TimeRange-SP") {
