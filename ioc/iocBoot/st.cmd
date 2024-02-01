@@ -12,7 +12,7 @@ streamApp_registerRecordDeviceDriver(pdbbase)
 
 # Setting up TCP/IP
 drvAsynIPPortConfigure("PS1", "10.31.24.28:1001")
-drvAsynIPPortConfigure("PS2", "10.31.24.28:1002")
+#drvAsynIPPortConfigure("PS2", "10.31.24.28:1002")
 
 # Load the records of Edwards Vacuum
 dbLoadRecords("${IOC}/db/StreakCamera.db", "port = PS1")

@@ -1,11 +1,11 @@
 ## Command Records
 
-record(ao, "SC:AppStart-Cmd") {
+record(ao, "SC:App:Start-Cmd") {
     field(DTYP, "stream")
     field(OUT,  "@StreakCamera.proto appStart $(port)")
 }
 
-record(ao, "SC:AppEnd-Cmd") {
+record(ao, "SC:App:End-Cmd") {
     field(DTYP, "stream")
     field(OUT,  "@StreakCamera.proto appEnd $(port)")
 }
@@ -17,6 +17,11 @@ record(mbbo, "SC:AcqParams:Start-Cmd") {
     field(ONST, "Acquire")         field(ONVL, "1")
     field(TWST, "AI")              field(TWVL, "2")
     field(THST, "PC")              field(THVL, "3")
+}
+
+record(ao, "SC:Lut:SetAuto-Cmd") {
+    field(DTYP, "stream")
+    field(OUT,  "@StreakCamera.proto lutSetAuto() $(port)")
 }
 
 ## Setpoint Records
