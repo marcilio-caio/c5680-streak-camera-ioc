@@ -60,7 +60,7 @@ class TCPClient:
             
         return response
     
-    def readFloat(self) -> float:
+    def readFloatSequence(self) -> float:
 
         response = []
         while response == [] or response[-1] != "\r":
