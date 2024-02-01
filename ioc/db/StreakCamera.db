@@ -15,7 +15,6 @@ record(ao, "SC:AppEnd-Cmd") {
 record(ao, "SC:GenParams:TimeRange-SP") {
     field(DTYP, "stream")
     field(OUT,  "@StreakCamera.proto DevParamSet(TD,Time Range,%d) $(port)")
-    field()
 }
 
 record(mbbo, "SC:GenParams:Mode-SP") {
