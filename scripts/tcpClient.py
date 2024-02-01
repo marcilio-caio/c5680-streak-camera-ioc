@@ -6,7 +6,7 @@
 """
 
 import socket
-
+import numpy as np
 
 class TCPClient:
 
@@ -31,7 +31,6 @@ class TCPClient:
             self.client.connect((self.host, self.port))
             self.is_connected = True
             print(f"Connected to {self.host}:{self.port}")
-            print(f"Handshake Message: {self.read()}")
         except ConnectionRefusedError:
             print("Connection refused. Check if the server is running.")
 
@@ -61,6 +60,17 @@ class TCPClient:
             
         return response
     
+    def readFloat(self) -> float:
+
+        response = []
+        while response == [] or response[-1] != "\r":
+            response.append(self.client.recv(1))
+            if len(response) == 4:
+                data_bytes = np.array(response, dtype=np.uint8)
+                data_as_float = data_bytes.view(dtype=np.float32)
+                print(data_as_float)
+                response = []
+    
 
     def close(self) -> None:
 
@@ -79,5 +89,4 @@ if __name__ == "__main__":
         while message != "exit\r":
             message = input("Enter a message: ")
             client.send(message + "\r")
-            print(client.read())
         client.close()

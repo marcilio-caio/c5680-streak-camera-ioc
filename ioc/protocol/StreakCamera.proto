@@ -1,12 +1,15 @@
 OutTerminator = CR;
 InTerminator  = CR;
-ReplyTimeout  = 600;
+ReplyTimeout  = 5000;
 
-appStart     { out "AppStart(\$1)";         in "%d,AppStart";              }
-appInfo      { out "AppInfo(\$1)";          in "0,AppInfo,%s";             }
-appEnd       { out "AppEnd()";                                             }
-stop         { out "Stop()";                in "%d,Stop";                  }
-shutdown     { out "Shutdown()";            in "%d,Shutdown";              }
-mainParamGet { out "MainParamGet(\$1)";     in "0,MainParamInfo,\$1,%f,*"; }
-genParamGet  { out "GenParamGet(\$1)";      in "%d,GenParamGet,*";         }
-genParamSet  { out "GenParamSet(\%1, %f)";  in "%d,GenParamSet";           }
+appStart          { out "AppStart()";                  in "%d,AppStart";              }
+appInfo           { out "AppInfo(\$1)";                in "0,AppInfo,%s";             }
+appEnd            { out "AppEnd()";                                                   }
+stop              { out "Stop()";                      in "%d,Stop";                  }
+shutdown          { out "Shutdown()";                  in "%d,Shutdown";              }
+mainParamGet      { out "MainParamGet(\$1)";           in "0,MainParamInfo,\$1,%f,*"; }
+devParamSet       { out "DevParamSet(\$1,\$2,\$3)";    in "%d,DevParamSet";           }
+devParamGetFloat  { out "DevParamSet(\$1,\$2)";        in "0,DevParamGet,%f";         }
+devParamGetStr    { out "DevParamSet(\$1,\$2)";        in "0,DevParamGet,%s";         }
+genParamSet       { out "GenParamSet(\%1,%f)";         in "%d,GenParamSet";           }
+genParamGet       { out "GenParamGet(\$1)";            in "%d,GenParamGet,*";         }
