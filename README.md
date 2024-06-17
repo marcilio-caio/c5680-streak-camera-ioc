@@ -1,93 +1,41 @@
-# streakcamera-epics-ioc
+# StreakCamera Epics IOC
 
+This Input/Output Controller (IOC) implements a StreamDevice EPICS IOC to communicate with the Hamamatsu Streak Camera. It uses WebSocket communication with the RemoteEx Program, which must be open for the system to function correctly.
 
+## Requirements
 
-## Getting started
+To run the IOC, ensure the following packages are installed:
+* EPICS, version >= R3.15.9
+* Streamdevice, version >= 2.8.16
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Running the application 
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
+To run the IOC, follow these steps:
+1. *Adjust the Execution Path:* In the `st.cmd` file located in `ioc/iocBoot`, update the execution path to where StreamDevice is installed. For example:
 ```
-cd existing_repo
-git remote add origin https://gitlab.cnpem.br/aro/beamlines-instrumentation/streakcamera-epics-ioc.git
-git branch -M main
-git push -uf origin main
+#!/opt/epics-R3.15.9/modules/StreamDevice-2.8.16/bin/linux-x86_64/streamApp
 ```
+2. *Set Environment Variables:* In the same st.cmd file, set the IOC and STREAMDEVICE environment variables to point to the root directories of the IOC and StreamDevice module, respectively.
+3. *Check IP and Port:* Ensure the IP and port in the `PS1` variable match the computer's IP where the RemoteEx Program is running.
+4. *Run the IOC:*
+    * Executes the `st.cmd` file to start the IOC.
+    * Alternatively, use the `streakcamera-epics-ioc.service` file in the `etc` folder to create and run an application service.
 
-## Integrate with your tools
+By following these steps, you can ensure that the IOC communicates correctly with the Hamamatsu Streak Camera.
 
-- [ ] [Set up project integrations](https://gitlab.cnpem.br/aro/beamlines-instrumentation/streakcamera-epics-ioc/-/settings/integrations)
+## Process Variables Description
 
-## Collaborate with your team
+|    Process Variable    |  Type  | Parameter | Description |
+|:----------------------:|:------:|:---------:|:-----------:|
+| SC:App:Start-Cmd | Stream | float | With the RemoteEx program opened in the computer where the StreakCamera is connected, sets a generic value to this PVs call a function that opens the software of the StreakCamera |
+|     SC:App:End-Cmd     | Stream |   float   | Closes the software of the StreakCamera |
+| SC:AcqParams:Start-Cmd | Stream |    int    | Starts an acquisiton in the camera. When executed, the user can pass  the following parameters: 0 (Live), 1 (Acquire), 2 (AI), and 3 (PC) |
+| SC:Lut:SetAuto-Cmd | Stream | float | Executes AutoLut functions to adjust the image contrast |
+| SC:ImgParams:CreateVerRectRoi-Cmd | Stream | float | Crates a vertical ROI in a image using the parameters that was configured in `SC:ImgParams:RoiIniX-SP` for initial x point, `SC:ImgParams:RoiWidthX-SP` for ROI width, and `SC:ImgParams:ImageHeight-Mon` for ROI height |
+| SC:GenParams:TimeRange-SP | stream | int | Sets the device time range |
+| SC:GenParams:Mode-SP | stream | int | Sets the operation mode of the camera. This parameter can be 0: Focus or 1: Operate |
+| SC:GenParams:MCPGain-SP | stream | int | Sets the device MCP Gain |
+| SC:GenParams:Shutter-SP | stream | int | Sets the status of the shutter. This parameter can be 0: Closed or 1: Open |
+| SC:GenParams:BlankingAmp-SP | stream | int | Sets the Blanking Amp time. This parameter can be 0: off, 1: 100 ns, 2: 200 ns, 3: 500 ns, 4: 1 us, 5: 2 us, 6: 5 us, 7: 10 us, 8: 20 us, 9: 50 us, 10: 100 us, 11: 200 us, 12: 500 us, 13: 1 ms, 14: 2 ms, and 15: 5 ms |
+| SC:GenParams:HTrigStatus-SP | stream | int | Sets the horizontal trigger status of the camera. This parameter can be 0: Ready, 1: Fired, and 2: Do Reset |
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
