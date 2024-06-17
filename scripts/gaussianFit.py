@@ -40,17 +40,22 @@ def gaussianFit(x: list, y: list) -> list:
         mu (float): Gaussian mean value
     """
 
-    popt, _ = curve_fit(gaussianModel, x, y)
+    popt, _ = curve_fit(gaussianModel, x, y, p0=(10, 10))
     return popt
 
 
 if __name__ == "__main__":
 
-    x = np.linspace(0, 20, 200)
-    y = gaussianModel(x, 2, 10) + 0.1 * np.random.normal(size=len(x))
-    sigma, mu = gaussianFit(x, y)
+    x = np.linspace(0, 100, 10000)
+    y = gaussianModel(x, 5, 100)
+    print(np.mean(y), np.std(y))
 
-    plt.plot(x, y)
+    sigma, mu = gaussianFit(x, y)
+    print("Sigma:", sigma)
+    print("Mu:", mu)
+    print("Size:", 2*3*sigma)
+
+    plt.scatter(x, y)
     plt.plot(x, gaussianModel(x, sigma, mu))
     plt.show()
 
